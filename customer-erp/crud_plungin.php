@@ -8,6 +8,7 @@
     Author URI: https://www.facebook.com/hendrakho
     License: GPL2
   */
+  global $wpdb;
   register_activation_hook(__FILE__, 'form_pelanggan_install');
     function form_pelanggan_install() {
         global $wpdb;

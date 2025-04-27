@@ -4,7 +4,6 @@ defined('ABSPATH') || exit;
 
 function form_pelanggan_handle_submission() {
     if (isset($_POST['simpan_pelanggan'])) {
-        global $wpdb;
         $table_name = $wpdb->prefix . 'pelanggan';
 
         $kode   = sanitize_text_field($_POST['kode_pelanggan']);
