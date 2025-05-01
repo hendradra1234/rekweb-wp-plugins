@@ -11,7 +11,7 @@
 ?>
 
 <?php
-  function modulapa() {
+  function crud_module() {
   	$conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 	// Periksa koneksi
