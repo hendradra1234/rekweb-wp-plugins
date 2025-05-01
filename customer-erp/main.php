@@ -36,9 +36,9 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="masterDropdown" data-toggle="dropdown">Master</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="admin.php?page=main&dest=pelanggam.php" target="content-frame">Pelanggan</a>
-            <a class="dropdown-item" href="admin.php?page=main&dest=barang.php" target="content-frame">Barang</a>
-            <a class="dropdown-item" href="admin.php?page=main&dest=supplier.php" target="content-frame">Supplier</a>
+            <a class="dropdown-item" href="admin.php?page=customer_erp_plungin&dest=pelanggam.php" target="content-frame">Pelanggan</a>
+            <a class="dropdown-item" href="admin.php?page=customer_erp_plungin&dest=barang.php" target="content-frame">Barang</a>
+            <a class="dropdown-item" href="admin.php?page=customer_erp_plungin&dest=supplier.php" target="content-frame">Supplier</a>
           </div>
         </li>
 
@@ -46,8 +46,8 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="transaksiDropdown" data-toggle="dropdown">Transaksi</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="admin.php?page=main&dest=pemesanan.php" target="content-frame">Pemesanan</a>
-            <a class="dropdown-item" href="admin.php?page=main&dest=cetak_invoice.php" target="content-frame">Cetak Invoice</a>
+            <a class="dropdown-item" href="admin.php?page=customer_erp_plungin&dest=pemesanan.php" target="content-frame">Pemesanan</a>
+            <a class="dropdown-item" href="admin.php?page=customer_erp_plungin&dest=cetak_invoice.php" target="content-frame">Cetak Invoice</a>
           </div>
         </li>
 

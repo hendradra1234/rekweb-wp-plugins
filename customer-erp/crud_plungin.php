@@ -12,10 +12,10 @@
   register_activation_hook(__FILE__, 'form_db_erp_install');
     function form_db_erp_install() {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'pelanggan';
+        $table_name = $wpdb->prefix . 'pelanggan_custom_erp';
         $charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE $table_name (
+        $sql = "CREATE TABLE $table_name IF NOT EXITS (
             kode_pelanggan VARCHAR(5) PRIMARY KEY,
             nama_pelanggan VARCHAR(60),
             alamat TEXT
