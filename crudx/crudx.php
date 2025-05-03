@@ -28,7 +28,7 @@
       'Menu Plugin ISB', # Title
       'crudx', # Nama Menu yang tampil
       'read', # Capability
-      'main_Crudx',# Nama Link
+      'main_crudx',# Nama Link
       'crud_module' #Nama Link atau page yang di panggil
     );
   }

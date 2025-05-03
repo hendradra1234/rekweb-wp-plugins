@@ -50,10 +50,6 @@
 			}
 		endif;
 
-		
-
-		
-
 		// Tutup koneksi
 		$stmt->close();
 

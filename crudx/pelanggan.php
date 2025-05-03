@@ -174,7 +174,7 @@
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>
-                                <a href='admin.php?page=tes_plugin&hal=pelanggan.php&aksi=hapus&kode_pelanggan=" . urlencode($row['kode_pelanggan']) . "' class='btn btn-warning btn-sm'>
+                                <a href='admin.php?page=main_crudx&hal=pelanggan.php&aksi=edit&kode_pelanggan=" . urlencode($row['kode_pelanggan']) . "' class='btn btn-warning btn-sm'>
                                     <i class='fa fa-edit'></i> Ubah
                                 </a>
                                 <button onclick='confirmDelete(\"" . $row['kode_pelanggan'] . "\")' class='btn btn-danger btn-sm'>
@@ -197,7 +197,7 @@
 <script>
 	function confirmUpdate(kode_pelanggan) {
 	    if (confirm("Apakah Anda yakin ingin menghapus pelanggan dengan kode " + kode_pelanggan + "?")) {
-	        window.location.href = "admin.php?page=tes_plugin&hal=pelanggan.php&aksi=hapus&kode_pelanggan=" + kode_pelanggan;
+	        window.location.href = "admin.php?page=main_crudx&hal=pelanggan.php&aksi=hapus&kode_pelanggan=" + kode_pelanggan;
 	    }
 	}
 </script>
