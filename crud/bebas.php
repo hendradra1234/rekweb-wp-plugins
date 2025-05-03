@@ -1,6 +1,6 @@
 <?php
   /*
-    Plugin Name: CRUDX Plugin
+    Plugin Name: CRUDX Koe
     Plugin URI: https://id.wordpress.org/plugins/crudx/
     Description: Saya belajar membuat plugin CRUD pertama di backend Wordpress
     Version: 0.1
@@ -11,7 +11,7 @@
 ?>
 
 <?php
-  function crud_module() {
+  function modulapa() {
   	$conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 	// Periksa koneksi
@@ -25,11 +25,11 @@
 <?php
   function menukik() {
     add_menu_page(
-      'Menu Plugin ISB', # Title
-      'crudx', # Nama Menu yang tampil
-      'read', # Capability
-      'tes_plungin',# Nama Link
-      'crud_module' #Nama Link atau page yang di panggil
+      'judulnya nek ape', #title dokumen
+      'CRUD', #nama menu yang tampil
+      'edit_posts', #capabilities
+      'utama', #nama link atau page yang dipanggil tapi bukan nama file
+      'modulapa' #nama fungsi modul yang dikerjakan
     );
   }
 

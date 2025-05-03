@@ -1,9 +1,11 @@
 <?php
 	$err_msg = "";
-	$kode_pelanggan = "";
-if (isset($_POST["btnsimpan"])):
+	$kode_pelanggan = $nama_pelanggan = $alamat = "";
+
+	if (isset($_POST["btnsimpan"])):
 
 		// Tangkap data dari formulir
+		
 		$nama_pelanggan = $_POST['nama_pelanggan'];
 		$alamat = $_POST['alamat'];
 
@@ -12,7 +14,7 @@ if (isset($_POST["btnsimpan"])):
 			if ($aksi=="ubah"):
 				$kode_pelanggan = $_GET['kode_pelanggan'];
 				// Query untuk mengupdate data pelanggan berdasarkan kode pelanggan
-				$sql = "UPDATE tbl_pelanggan SET nama_pelanggan = ?, alamat = ? WHERE kode_pelanggan = ?";
+				$sql = "UPDATE tbl_pelanggan_crud SET nama_pelanggan = ?, alamat = ? WHERE kode_pelanggan = ?";
 
 				// Gunakan prepared statement untuk keamanan
 				$stmt = $conn->prepare($sql);
@@ -31,7 +33,7 @@ if (isset($_POST["btnsimpan"])):
 		else:
 			$kode_pelanggan = $_POST['kode_pelanggan'];	
 			// Query untuk menyimpan data
-			$sql = "INSERT INTO tbl_pelanggan (kode_pelanggan, nama_pelanggan, alamat) VALUES (?, ?, ?)";
+			$sql = "INSERT INTO tbl_pelanggan_crud (kode_pelanggan, nama_pelanggan, alamat) VALUES (?, ?, ?)";
 
 			// Gunakan prepared statement untuk keamanan
 			$stmt = $conn->prepare($sql);
@@ -48,51 +50,85 @@ if (isset($_POST["btnsimpan"])):
 			}
 		endif;
 
+		
+
+		
+
 		// Tutup koneksi
 		$stmt->close();
 
 		echo '<meta http-equiv="refresh" content="2;url=admin.php?page=utama&hal=pelanggan.php">';
 	endif;
 
+	// Query untuk mendapatkan kode pelanggan terakhir
+	$sql = "SELECT MAX(kode_pelanggan) AS max_kode FROM tbl_pelanggan_crud";
+	$result = $conn->query($sql);
+
+	if ($result) {
+	    $row = $result->fetch_assoc();
+	    $max_kode = $row['max_kode']; // Contoh: "P0003"
+
+	    // Jika belum ada data, mulai dari P0001
+	    if ($max_kode) {
+	        $angka = intval(substr($max_kode, 1)) + 1; // Ambil angka lalu tambahkan 1
+	        $kode_pelanggan = "P" . str_pad($angka, 4, "0", STR_PAD_LEFT); // Format P000X
+	    } else {
+	        $kode_pelanggan = "P0001"; // Jika belum ada data, mulai dari P0001
+	    }
+	} 
+	
 	// Pastikan parameter kode_pelanggan tersedia
-if (isset($_GET["aksi"])) {
-    $aksi = $_GET["aksi"];
-    $kode_pelanggan = $_GET['kode_pelanggan'];
+	if (isset($_GET["aksi"])):
+		$aksi = $_GET["aksi"];
+		$kode_pelanggan = $_GET['kode_pelanggan'];
+		
+		if ($aksi=="ubah"):
+			$sql = "SELECT * FROM tbl_pelanggan_crud WHERE kode_pelanggan = ?";
 
-    if ($aksi == "ubah") {
-        $sql = "SELECT kode_pelanggan, nama_pelanggan, alamat FROM tbl_pelanggan WHERE kode_pelanggan = ?";
+		    // Gunakan prepared statement untuk keamanan
+		    $stmt = $conn->prepare($sql);
+		    $stmt->bind_param("s", $kode_pelanggan);
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $kode_pelanggan);
+		    // Eksekusi query dan cek hasil
+		    if ($stmt->execute()) {
+		        $result = $stmt->get_result();
+		        if ($result->num_rows > 0) {
+		            // Ambil data pelanggan ke dalam variabel
+		            $row = $result->fetch_assoc();
+		            $kode_pelanggan = $row['kode_pelanggan'];
+		            $nama_pelanggan = $row['nama_pelanggan'];
+		            $alamat = $row['alamat'];
+		        } else {
+		            echo "Data pelanggan tidak ditemukan!";
+		        }
+		    } 
+		endif;
 
-        if ($stmt->execute()) {
-            $stmt->store_result();
-            if ($stmt->num_rows > 0) {
-                $stmt->bind_result($kode_pelanggan, $nama_pelanggan, $alamat);
-                $stmt->fetch();
-            } else {
-                echo "Data pelanggan tidak ditemukan!";
-            }
-        }
-        $stmt->close();
-    }
+		if ($aksi=="hapus"):
+			// Query untuk menghapus data
+		    $sql = "DELETE FROM tbl_pelanggan_crud WHERE kode_pelanggan = ?";
 
-    if ($aksi == "hapus") {
-        $sql = "DELETE FROM tbl_pelanggan WHERE kode_pelanggan = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $kode_pelanggan);
+		    // Gunakan prepared statement untuk keamanan
+		    $stmt = $conn->prepare($sql);
+		    $stmt->bind_param("s", $kode_pelanggan);
 
-        if ($stmt->execute()) {
-            $err_msg = '<div class="alert alert-success">
-                        <strong>Success!</strong> Data pelanggan berhasil dihapus!
-                      </div>';
-        } else {
-            $err_msg = '<div class="alert alert-danger">
-                        <strong>Danger!</strong> Terjadi kesalahan: ' . $stmt->error . '</div>';
-        }
-        $stmt->close();
-    }
-}
+		    // Eksekusi query dan cek hasil
+		    if ($stmt->execute()) {
+		        $err_msg = '<div class="alert alert-success">
+					    <strong>Success!</strong> Data pelanggan berhasil dihapus!
+					  </div>';
+		    } else {
+		        $err_msg = '<div class="alert alert-danger">
+    						<strong>Danger!</strong> Terjadi kesalahan: ' . $stmt->error . '</div>';
+		    }
+
+		    // Tutup koneksi
+		    $stmt->close();
+		    echo '<meta http-equiv="refresh" content="2;url=admin.php?page=utama&hal=pelanggan.php">';
+		endif;
+	endif;
+
+	
 ?>
 
 
@@ -103,19 +139,19 @@ if (isset($_GET["aksi"])) {
         <!-- Kode Pelanggan -->
         <div class="form-group">
             <label for="kode_pelanggan">Kode Pelanggan</label>
-			<input <?= (!empty($kode_pelanggan)) ? "readonly" : "" ?> value="<?= $kode_pelanggan ?>" type="text" class="form-control" id="kode_pelanggan" name="kode_pelanggan" maxlength="5" required>
+            <input <?= (!empty($kode_pelanggan)) ? "readonly" : "" ?> value="<?= $kode_pelanggan ?>" type="text" class="form-control" id="kode_pelanggan" name="kode_pelanggan" maxlength="5" required>
         </div>
 
         <!-- Nama Pelanggan -->
         <div class="form-group">
             <label for="nama_pelanggan">Nama Pelanggan</label>
-            <input type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan" maxlength="60" required>
+            <input value="<?= $nama_pelanggan ?>" type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan" maxlength="60" required>
         </div>
 
         <!-- Alamat Pelanggan -->
         <div class="form-group">
             <label for="alamat">Alamat</label>
-            <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
+            <textarea class="form-control" id="alamat" name="alamat" rows="3" required><?= $alamat ?></textarea>
         </div>
 
         <!-- Tombol Submit -->
@@ -123,7 +159,7 @@ if (isset($_GET["aksi"])) {
     </form>
 
     <?php
-    	$sql = "SELECT * FROM tbl_pelanggan";
+    	$sql = "SELECT * FROM tbl_pelanggan_crud";
 		$result = $conn->query($sql);
     ?>
 
@@ -143,7 +179,7 @@ if (isset($_GET["aksi"])) {
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>
-                                <a href='admin.php?page=tes_plugin&hal=pelanggan.php&aksi=hapus&kode_pelanggan=" . urlencode($row['kode_pelanggan']) . "' class='btn btn-warning btn-sm'>
+                                <a href='admin.php?page=utama&hal=pelanggan.php&aksi=ubah&kode_pelanggan=" . urlencode($row['kode_pelanggan']) . "' class='btn btn-warning btn-sm'>
                                     <i class='fa fa-edit'></i> Ubah
                                 </a>
                                 <button onclick='confirmDelete(\"" . $row['kode_pelanggan'] . "\")' class='btn btn-danger btn-sm'>
@@ -164,9 +200,9 @@ if (isset($_GET["aksi"])) {
 </div>
 
 <script>
-	function confirmUpdate(kode_pelanggan) {
+	function confirmDelete(kode_pelanggan) {
 	    if (confirm("Apakah Anda yakin ingin menghapus pelanggan dengan kode " + kode_pelanggan + "?")) {
-	        window.location.href = "admin.php?page=tes_plugin&hal=pelanggan.php&aksi=hapus&kode_pelanggan=" + kode_pelanggan;
+	        window.location.href = "admin.php?page=utama&hal=pelanggan.php&aksi=hapus&kode_pelanggan=" + kode_pelanggan;
 	    }
 	}
 </script>
