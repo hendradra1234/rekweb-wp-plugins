@@ -11,7 +11,7 @@
 
     <!-- Navigasi -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Dashboard</a>
+        <a class="navbar-brand" href="#">Dashboard CRUDX</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -22,9 +22,9 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="masterDropdown" data-toggle="dropdown">Master</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="admin.php?page=tes_plungin&hal=pelanggan.php" target="contentFrame">Pelanggan</a>
-                        <a class="dropdown-item" href="admin.php?page=tes_plungin&hal=barang.php" target="contentFrame">Barang</a>
-                        <a class="dropdown-item" href="admin.php?page=tes_plungin&hal=supplier.php" target="contentFrame">Supplier</a>
+                        <a class="dropdown-item" href="admin.php?page=main_crudx&hal=pelanggan.php" target="contentFrame">Pelanggan</a>
+                        <a class="dropdown-item" href="admin.php?page=main_crudx&hal=barang.php" target="contentFrame">Barang</a>
+                        <a class="dropdown-item" href="admin.php?page=main_crudx&hal=supplier.php" target="contentFrame">Supplier</a>
                     </div>
                 </li>
 
@@ -32,8 +32,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="transaksiDropdown" data-toggle="dropdown">Transaksi</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="admin.php?page=tes_plungin&hal=pemesanan.php" target="contentFrame">Pemesanan</a>
-                        <a class="dropdown-item" href="admin.php?page=tes_plungin&hal=invoice.php" target="contentFrame">Cetak Invoice</a>
+                        <a class="dropdown-item" href="admin.php?page=main_crudx&hal=pemesanan.php" target="contentFrame">Pemesanan</a>
+                        <a class="dropdown-item" href="admin.php?page=main_crudx&hal=invoice.php" target="contentFrame">Cetak Invoice</a>
                     </div>
                 </li>
 
@@ -41,7 +41,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="laporanDropdown" data-toggle="dropdown">Laporan</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="admin.php?page=tes_plungin&hal=laporan_penjualan.php" target="contentFrame">Laporan Penjualan</a>
+                        <a class="dropdown-item" href="admin.php?page=main_crudx&hal=laporan_penjualan.php" target="contentFrame">Laporan Penjualan</a>
                     </div>
                 </li>
             </ul>

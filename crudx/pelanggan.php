@@ -1,7 +1,8 @@
 <?php
 	$err_msg = "";
-	$kode_pelanggan = "";
-if (isset($_POST["btnsimpan"])):
+	$kode_pelanggan = $nama_pelanggan = $alamat = "";
+
+	if (isset($_POST["btnsimpan"])):
 
 		// Tangkap data dari formulir
 		$nama_pelanggan = $_POST['nama_pelanggan'];
@@ -51,48 +52,78 @@ if (isset($_POST["btnsimpan"])):
 		// Tutup koneksi
 		$stmt->close();
 
-		echo '<meta http-equiv="refresh" content="2;url=admin.php?page=utama&hal=pelanggan.php">';
+		echo '<meta http-equiv="refresh" content="2;url=admin.php?page=main_crudx&hal=pelanggan.php">';
 	endif;
 
+	// Query untuk mendapatkan kode pelanggan terakhir
+	$sql = "SELECT MAX(kode_pelanggan) AS max_kode FROM tbl_pelanggan";
+	$result = $conn->query($sql);
+
+	if ($result) {
+	    $row = $result->fetch_assoc();
+	    $max_kode = $row['max_kode']; // Contoh: "P0003"
+
+	    // Jika belum ada data, mulai dari P0001
+	    if ($max_kode) {
+	        $angka = intval(substr($max_kode, 1)) + 1; // Ambil angka lalu tambahkan 1
+	        $kode_pelanggan = "P" . str_pad($angka, 4, "0", STR_PAD_LEFT); // Format P000X
+	    } else {
+	        $kode_pelanggan = "P0001"; // Jika belum ada data, mulai dari P0001
+	    }
+	}
+
 	// Pastikan parameter kode_pelanggan tersedia
-if (isset($_GET["aksi"])) {
-    $aksi = $_GET["aksi"];
-    $kode_pelanggan = $_GET['kode_pelanggan'];
+	if (isset($_GET["aksi"])):
+		$aksi = $_GET["aksi"];
+		$kode_pelanggan = $_GET['kode_pelanggan'];
 
-    if ($aksi == "ubah") {
-        $sql = "SELECT kode_pelanggan, nama_pelanggan, alamat FROM tbl_pelanggan WHERE kode_pelanggan = ?";
+		if ($aksi=="ubah"):
+			$sql = "SELECT * FROM tbl_pelanggan WHERE kode_pelanggan = ?";
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $kode_pelanggan);
+		    // Gunakan prepared statement untuk keamanan
+		    $stmt = $conn->prepare($sql);
+		    $stmt->bind_param("s", $kode_pelanggan);
 
-        if ($stmt->execute()) {
-            $stmt->store_result();
-            if ($stmt->num_rows > 0) {
-                $stmt->bind_result($kode_pelanggan, $nama_pelanggan, $alamat);
-                $stmt->fetch();
-            } else {
-                echo "Data pelanggan tidak ditemukan!";
-            }
-        }
-        $stmt->close();
-    }
+		    // Eksekusi query dan cek hasil
+		    if ($stmt->execute()) {
+		        $result = $stmt->get_result();
+		        if ($result->num_rows > 0) {
+		            // Ambil data pelanggan ke dalam variabel
+		            $row = $result->fetch_assoc();
+		            $kode_pelanggan = $row['kode_pelanggan'];
+		            $nama_pelanggan = $row['nama_pelanggan'];
+		            $alamat = $row['alamat'];
+		        } else {
+		            echo "Data pelanggan tidak ditemukan!";
+		        }
+		    } 
+		endif;
 
-    if ($aksi == "hapus") {
-        $sql = "DELETE FROM tbl_pelanggan WHERE kode_pelanggan = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $kode_pelanggan);
+		if ($aksi=="hapus"):
+			// Query untuk menghapus data
+		    $sql = "DELETE FROM tbl_pelanggan WHERE kode_pelanggan = ?";
 
-        if ($stmt->execute()) {
-            $err_msg = '<div class="alert alert-success">
-                        <strong>Success!</strong> Data pelanggan berhasil dihapus!
-                      </div>';
-        } else {
-            $err_msg = '<div class="alert alert-danger">
-                        <strong>Danger!</strong> Terjadi kesalahan: ' . $stmt->error . '</div>';
-        }
-        $stmt->close();
-    }
-}
+		    // Gunakan prepared statement untuk keamanan
+		    $stmt = $conn->prepare($sql);
+		    $stmt->bind_param("s", $kode_pelanggan);
+
+		    // Eksekusi query dan cek hasil
+		    if ($stmt->execute()) {
+		        $err_msg = '<div class="alert alert-success">
+					    <strong>Success!</strong> Data pelanggan berhasil dihapus!
+					  </div>';
+		    } else {
+		        $err_msg = '<div class="alert alert-danger">
+    						<strong>Danger!</strong> Terjadi kesalahan: ' . $stmt->error . '</div>';
+		    }
+
+		    // Tutup koneksi
+		    $stmt->close();
+		    echo '<meta http-equiv="refresh" content="2;url=admin.php?page=main_crudx&hal=pelanggan.php">';
+		endif;
+	endif;
+
+	
 ?>
 
 

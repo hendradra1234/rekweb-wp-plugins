@@ -23,15 +23,15 @@
 ?>
 
 <?php
-  function menukik() {
+  function mainMenu() {
     add_menu_page(
       'Menu Plugin ISB', # Title
       'crudx', # Nama Menu yang tampil
       'read', # Capability
-      'tes_plungin',# Nama Link
+      'main_Crudx',# Nama Link
       'crud_module' #Nama Link atau page yang di panggil
     );
   }
 
-  add_action('admin_menu', 'menukik');
+  add_action('admin_menu', 'mainMenu');
 ?>
