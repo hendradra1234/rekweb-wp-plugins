@@ -28,31 +28,44 @@
 	endif;
 
 	// Pastikan parameter kode_pelanggan tersedia
-	if (isset($_GET["aksi"])):
-		$aksi = $_GET["aksi"];
-		$kode_pelanggan = $_GET['kode_pelanggan'];
-		if ($aksi=="hapus"):
-			// Query untuk menghapus data
-		    $sql = "DELETE FROM tbl_pelanggan WHERE kode_pelanggan = ?";
+if (isset($_GET["aksi"])) {
+    $aksi = $_GET["aksi"];
+    $kode_pelanggan = $_GET['kode_pelanggan'];
 
-		    // Gunakan prepared statement untuk keamanan
-		    $stmt = $conn->prepare($sql);
-		    $stmt->bind_param("s", $kode_pelanggan);
+    if ($aksi == "ubah") {
+        $sql = "SELECT kode_pelanggan, nama_pelanggan, alamat FROM tbl_pelanggan WHERE kode_pelanggan = ?";
 
-		    // Eksekusi query dan cek hasil
-		    if ($stmt->execute()) {
-		        $err_msg = '<div class="alert alert-success">
-					    <strong>Success!</strong> Data pelanggan berhasil dihapus!
-					  </div>';
-		    } else {
-		        $err_msg = '<div class="alert alert-danger">
-    						<strong>Danger!</strong> Terjadi kesalahan: ' . $stmt->error . '</div>';
-		    }
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $kode_pelanggan);
 
-		    // Tutup koneksi
-		    $stmt->close();
-		endif;
-	endif;
+        if ($stmt->execute()) {
+            $stmt->store_result();
+            if ($stmt->num_rows > 0) {
+                $stmt->bind_result($kode_pelanggan, $nama_pelanggan, $alamat);
+                $stmt->fetch();
+            } else {
+                echo "Data pelanggan tidak ditemukan!";
+            }
+        }
+        $stmt->close();
+    }
+
+    if ($aksi == "hapus") {
+        $sql = "DELETE FROM tbl_pelanggan WHERE kode_pelanggan = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $kode_pelanggan);
+
+        if ($stmt->execute()) {
+            $err_msg = '<div class="alert alert-success">
+                        <strong>Success!</strong> Data pelanggan berhasil dihapus!
+                      </div>';
+        } else {
+            $err_msg = '<div class="alert alert-danger">
+                        <strong>Danger!</strong> Terjadi kesalahan: ' . $stmt->error . '</div>';
+        }
+        $stmt->close();
+    }
+}
 ?>
 
 
@@ -63,7 +76,7 @@
         <!-- Kode Pelanggan -->
         <div class="form-group">
             <label for="kode_pelanggan">Kode Pelanggan</label>
-            <input type="text" class="form-control" id="kode_pelanggan" name="kode_pelanggan" maxlength="5" required>
+			<input <?= (!empty($kode_pelanggan)) ? "readonly" : "" ?> value="<?= $kode_pelanggan ?>" type="text" class="form-control" id="kode_pelanggan" name="kode_pelanggan" maxlength="5" required>
         </div>
 
         <!-- Nama Pelanggan -->
@@ -103,7 +116,7 @@
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>
-                                <a href='edit_pelanggan.php?kode_pelanggan=" . urlencode($row['kode_pelanggan']) . "' class='btn btn-warning btn-sm'>
+                                <a href='admin.php?page=tes_plugin&hal=pelanggan.php&aksi=hapus&kode_pelanggan=" . urlencode($row['kode_pelanggan']) . "' class='btn btn-warning btn-sm'>
                                     <i class='fa fa-edit'></i> Ubah
                                 </a>
                                 <button onclick='confirmDelete(\"" . $row['kode_pelanggan'] . "\")' class='btn btn-danger btn-sm'>
@@ -124,9 +137,9 @@
 </div>
 
 <script>
-	function confirmDelete(kode_pelanggan) {
+	function confirmUpdate(kode_pelanggan) {
 	    if (confirm("Apakah Anda yakin ingin menghapus pelanggan dengan kode " + kode_pelanggan + "?")) {
-	        window.location.href = "admin.php?page=utama&hal=pelanggan.php&aksi=hapus&kode_pelanggan=" + kode_pelanggan;
+	        window.location.href = "admin.php?page=tes_plugin&hal=pelanggan.php&aksi=hapus&kode_pelanggan=" + kode_pelanggan;
 	    }
 	}
 </script>
