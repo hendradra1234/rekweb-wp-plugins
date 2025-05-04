@@ -1,10 +1,10 @@
 <?php
   /*
     Plugin Name: CRUDX Plugin
-    Plugin URI: https://id.wordpress.org/plugins/crudx/
+    Plugin URI: https://hendrakhoisb.wordpress.com/
     Description: Saya belajar membuat plugin CRUD pertama di backend Wordpress
     Version: 0.1
-    Author: Yohanes Setiawan Japriadi
+    Author: Hendra
     Author URI: https://www.facebook.com/kelasberat88
     License: GPL2
   */

@@ -96,7 +96,7 @@
 		        } else {
 		            echo "Data pelanggan tidak ditemukan!";
 		        }
-		    } 
+		    }
 		endif;
 
 		if ($aksi=="hapus"):
@@ -122,8 +122,6 @@
 		    echo '<meta http-equiv="refresh" content="2;url=admin.php?page=main_crudx&hal=pelanggan.php">';
 		endif;
 	endif;
-
-	
 ?>
 
 
@@ -134,19 +132,19 @@
         <!-- Kode Pelanggan -->
         <div class="form-group">
             <label for="kode_pelanggan">Kode Pelanggan</label>
-			<input <?= (!empty($kode_pelanggan)) ? "readonly" : "" ?> value="<?= $kode_pelanggan ?>" type="text" class="form-control" id="kode_pelanggan" name="kode_pelanggan" maxlength="5" required>
+            <input <?= (!empty($kode_pelanggan)) ? "readonly" : "" ?> value="<?= $kode_pelanggan ?>" type="text" class="form-control" id="kode_pelanggan" name="kode_pelanggan" maxlength="5" required>
         </div>
 
         <!-- Nama Pelanggan -->
         <div class="form-group">
             <label for="nama_pelanggan">Nama Pelanggan</label>
-            <input type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan" maxlength="60" required>
+            <input value="<?= $nama_pelanggan ?>" type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan" maxlength="60" required>
         </div>
 
         <!-- Alamat Pelanggan -->
         <div class="form-group">
             <label for="alamat">Alamat</label>
-            <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
+            <textarea class="form-control" id="alamat" name="alamat" rows="3" required><?= $alamat ?></textarea>
         </div>
 
         <!-- Tombol Submit -->
@@ -174,7 +172,7 @@
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>
-                                <a href='admin.php?page=main_crudx&hal=pelanggan.php&aksi=edit&kode_pelanggan=" . urlencode($row['kode_pelanggan']) . "' class='btn btn-warning btn-sm'>
+                                <a href='admin.php?page=main_crudx&hal=pelanggan.php&aksi=ubah&kode_pelanggan=" . urlencode($row['kode_pelanggan']) . "' class='btn btn-warning btn-sm'>
                                     <i class='fa fa-edit'></i> Ubah
                                 </a>
                                 <button onclick='confirmDelete(\"" . $row['kode_pelanggan'] . "\")' class='btn btn-danger btn-sm'>
@@ -195,7 +193,7 @@
 </div>
 
 <script>
-	function confirmUpdate(kode_pelanggan) {
+	function confirmDelete(kode_pelanggan) {
 	    if (confirm("Apakah Anda yakin ingin menghapus pelanggan dengan kode " + kode_pelanggan + "?")) {
 	        window.location.href = "admin.php?page=main_crudx&hal=pelanggan.php&aksi=hapus&kode_pelanggan=" + kode_pelanggan;
 	    }

@@ -142,7 +142,7 @@
         <!-- alamat Supplier -->
         <div class="form-group">
             <label for="alamat">Alamat</label>
-            <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
+            <textarea class="form-control" id="alamat" name="alamat" rows="3" required><?= $alamat ?></textarea>
         </div>
 
         <!-- Tombol Submit -->
@@ -179,7 +179,7 @@
                               </td>";
                     echo "<td>" . htmlspecialchars($row['kode_supplier']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['nama_supplier']) . "</td>";
-                    echo "<td>Rp. " . number_format($row['alamat'], 0, ',', '.') . "</td>";
+                    echo "<td>" . htmlspecialchars($row['alamat']) . "</td>";
                     echo "</tr>";
                 }
             } else {
